@@ -3,13 +3,15 @@ Python Challenge
 
 No.1
 ----
-http://www.pythonchallenge.com/pcc/def/map.html
+http://www.pythonchallenge.com/pc/def/map.html
+
 凯撒密码， K->M, O->Q, E->G, 位移了2
 因此对标题 map 进行位移2操作，得到 ocr
 
 No.2
 ----
-http://www.pythonchallenge.com/pcc/def/ocr.html
+http://www.pythonchallenge.com/pc/def/ocr.html
+
 查看页面源代码，找到注释，保存为 2.txt
 ``` python
 f = open('2.txt','r')
@@ -24,9 +26,10 @@ print d # equality
 
 No.3
 ----
-http://www.pythonchallenge.com/pcc/def/equality.html
+http://www.pythonchallenge.com/pc/def/equality.html
+
 查看页面源代码，找到注释，保存为 3.txt
-```
+``` python
 import re
 f = open('3.txt','r')
 hints = f.read()
@@ -37,9 +40,10 @@ print ''.join([i[4] for i in x]) # linkedlist
 
 No.4
 ----
-http://www.pythonchallenge.com/pcc/def/linkedlist.html
+http://www.pythonchallenge.com/pc/def/linkedlist.html
+
 查看源代码，提示follow the chain, 点击图片进入循环
-```
+``` python
 import requests
 import re
 url0 = 'http://www.pythonchallenge.com/pc/def/linkedlist.php?nothing='
@@ -53,9 +57,10 @@ while n:
 
 No.5
 -----
-http://www.pythonchallenge.com/pcc/def/peak.html
+http://www.pythonchallenge.com/pc/def/peak.html
+
 查看源代码，提示 peak hell 与 pickle 发音类似, 下载 banner.p
-```
+``` python
 import pickle
 with open('banner.p', 'r') as f:
     hints = pickle.load(f)
@@ -69,10 +74,11 @@ for l in hints:
 
 No.6
 -----
-http://www.pythonchallenge.com/pcc/def/channel.html
+http://www.pythonchallenge.com/pc/def/channel.html
+
 拉链为 zip, 查看源代码，提示 html <- zip, 将地址上html 改为zip，下载
 channel.zip, 查看readme.txt, start from 90052, 打开90052, 与之前linkedlist类似。
-```
+``` python
 import re
 import zipfile
 channels = zipfile.ZipFile('channel.zip', 'r')
@@ -84,7 +90,7 @@ while n:
 ```
 到达 n=46145 停止， 其内容为 "Collect the comments"
 因此改变循环体
-```
+``` python
 comments = []
 n = '90052'
 while n:
@@ -98,4 +104,78 @@ print "".join(comment)
 
 No.7
 ----
-http://www.pythonchallenge.com/pcc/def/oxygen.html
+http://www.pythonchallenge.com/pc/def/oxygen.html
+
+图片 oxygen.png 中间存在灰度图片，使用PIL提取灰度图的灰度值，作为ascii码
+``` python
+from PIL import Image
+fig = Image.open('oxygen.png')
+col = [ fig.getpixel((3,y)) for y in range(fig.size[1])]
+ns = [i for i, p in enumerate(col) if p[0]==p[1]==p[2]] # [43, 44, ..., 51]
+n = ns[3]
+row = [ fig.getpixel((x,n)) for x in range(fig.size[0])]
+info = [r for r,g,b,a in row if r==g==b]
+"".join(map(chr, info[::7]))
+# come up with  [105, 110, 116, 101, 103, 114, 105, 116, 121]
+next =  [105, 110, 116, 101, 103, 114, 105, 116, 121]
+"".join(map(chr, next)) # integrity
+```
+
+No.8
+----
+http://www.pythonchallenge.com/pc/def/integrity.html
+
+网页源代码中写出 username, password
+两个字符串经过bz2压缩，因此需要解压才可。
+```python
+import bz2
+un = 'BZh91AY&SYA\xaf\x82\r\x00\x00\x01\x01\x80\x02\xc0\x02\x00 \x00!\x9ah3M\x07<]\xc9\x14\xe1BA\x06\xbe\x084'
+pw = BZh91AY&SY\x94$|\x0e\x00\x00\x00\x81\x00\x03$ \x00!\x9ah3M\x13<]\xc9\x14\xe1BBP\x91\xf08
+
+print bz2.decompress(un) # huge
+print bz2.decompress(pw) # file
+```
+
+No.9
+-----
+http://www.pythonchallenge.com/pc/return/good.html
+
+不知道什么意思。找到的答案为
+``` python
+first = [146,399,163,403,170,393,169,391,166,386,170,381,170,371,170,355,169,346,167,335,170,329,170,320,170,
+310,171,301,173,290,178,289,182,287,188,286,190,286,192,291,194,296,195,305,194,307,191,312,190,316,
+190,321,192,331,193,338,196,341,197,346,199,352,198,360,197,366,197,373,196,380,197,383,196,387,192,
+389,191,392,190,396,189,400,194,401,201,402,208,403,213,402,216,401,219,397,219,393,216,390,215,385,
+215,379,213,373,213,365,212,360,210,353,210,347,212,338,213,329,214,319,215,311,215,306,216,296,218,
+290,221,283,225,282,233,284,238,287,243,290,250,291,255,294,261,293,265,291,271,291,273,289,278,287,
+279,285,281,280,284,278,284,276,287,277,289,283,291,286,294,291,296,295,299,300,301,304,304,320,305,
+327,306,332,307,341,306,349,303,354,301,364,301,371,297,375,292,384,291,386,302,393,324,391,333,387,
+328,375,329,367,329,353,330,341,331,328,336,319,338,310,341,304,341,285,341,278,343,269,344,262,346,
+259,346,251,349,259,349,264,349,273,349,280,349,288,349,295,349,298,354,293,356,286,354,279,352,268,
+352,257,351,249,350,234,351,211,352,197,354,185,353,171,351,154,348,147,342,137,339,132,330,122,327,
+120,314,116,304,117,293,118,284,118,281,122,275,128,265,129,257,131,244,133,239,134,228,136,221,137,
+214,138,209,135,201,132,192,130,184,131,175,129,170,131,159,134,157,134,160,130,170,125,176,114,176,
+102,173,103,172,108,171,111,163,115,156,116,149,117,142,116,136,115,129,115,124,115,120,115,115,117,
+113,120,109,122,102,122,100,121,95,121,89,115,87,110,82,109,84,118,89,123,93,129,100,130,108,132,110,
+133,110,136,107,138,105,140,95,138,86,141,79,149,77,155,81,162,90,165,97,167,99,171,109,171,107,161,
+111,156,113,170,115,185,118,208,117,223,121,239,128,251,133,259,136,266,139,276,143,290,148,310,151,
+332,155,348,156,353,153,366,149,379,147,394,146,399]
+
+second = [156,141,165,135,169,131,176,130,187,134,191,140,191,146,186,150,179,155,175,157,168,157,163,157,159,
+157,158,164,159,175,159,181,157,191,154,197,153,205,153,210,152,212,147,215,146,218,143,220,132,220,
+125,217,119,209,116,196,115,185,114,172,114,167,112,161,109,165,107,170,99,171,97,167,89,164,81,162,
+77,155,81,148,87,140,96,138,105,141,110,136,111,126,113,129,118,117,128,114,137,115,146,114,155,115,
+158,121,157,128,156,134,157,136,156,136]
+
+from PIL import Image, ImageDraw
+img = Image.new("RGB", (640,480))
+draw = ImageDraw.Draw(img)
+draw.line(first)
+draw.line(second)
+img.save('new.jpg')
+```
+得到一头公牛的图片，bull
+
+No.10
+-----
+http://www.pythonchallenge.com/pc/return/bull.html
