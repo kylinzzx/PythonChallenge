@@ -130,7 +130,7 @@ http://www.pythonchallenge.com/pc/def/integrity.html
 ```python
 import bz2
 un = 'BZh91AY&SYA\xaf\x82\r\x00\x00\x01\x01\x80\x02\xc0\x02\x00 \x00!\x9ah3M\x07<]\xc9\x14\xe1BA\x06\xbe\x084'
-pw = BZh91AY&SY\x94$|\x0e\x00\x00\x00\x81\x00\x03$ \x00!\x9ah3M\x13<]\xc9\x14\xe1BBP\x91\xf08
+pw = 'BZh91AY&SY\x94$|\x0e\x00\x00\x00\x81\x00\x03$ \x00!\x9ah3M\x13<]\xc9\x14\xe1BBP\x91\xf08'
 
 print bz2.decompress(un) # huge
 print bz2.decompress(pw) # file
@@ -179,3 +179,27 @@ img.save('new.jpg')
 No.10
 -----
 http://www.pythonchallenge.com/pc/return/bull.html
+
+点击图片，可以看到数列 a = [1, 11, 21, 1211, 111221,
+求 len(a[30])
+规律就是读出数字，1个1-> 11, 两个1 -> 21, ...
+
+``` python
+import re
+
+pat = re.compile(r'1+|2+|3+|4+|5+|6+|7+|8+|9+')
+
+def say(numstr):
+    curr = pat.findall(numstr)
+    next = "".join([str(len(s))+s[0] for s in curr])
+    return next
+n = 0
+a = '1'
+while n<30:
+    a = say(a)
+    n += 1
+print len(a) # 5808
+```
+
+No.11
+http://www.pythonchallenge.com/pc/return/5808.html
