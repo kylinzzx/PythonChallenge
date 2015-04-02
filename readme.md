@@ -202,4 +202,28 @@ print len(a) # 5808
 ```
 
 No.11
+------
 http://www.pythonchallenge.com/pc/return/5808.html
+
+提示是奇偶。对图片的奇偶进行提取
+``` python
+from PIL import Image
+
+img =  Image.open('cave.jpg')
+width, length = img.size
+
+subimgs = [Image.new("RGB",width//2,length//2) for i in range(2)]
+
+for x in range(width):
+    i = x % 2
+    sub = subimgs[i]
+    for y in range(length):
+        sub.putpixel((x//2, y//2),img.getpixel((x,y)))
+
+subimg[0].save('even.jpg')
+subimg[1].save('odd.jpg') # evil
+```
+
+No.12
+-----
+http://www.pythonchallenge.com/pc/return/evil.html
