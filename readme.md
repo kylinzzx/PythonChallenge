@@ -227,3 +227,23 @@ subimg[1].save('odd.jpg') # evil
 No.12
 -----
 http://www.pythonchallenge.com/pc/return/evil.html
+
+图片地址为 evil1.jpg, 改为 evil2.jpg: not jpg -gfx
+evil3.jpg: no more evils
+evil2.gfx: 得到这个文件
+
+``` python
+import StringIO
+from PIL import Image
+
+with open('evil2.gfx','r') as f:
+    data = f.read()
+for i in range(5):
+    p = data[i::5]
+    f = open('No.12-%d.jpg' %i, 'wb')
+    f.write(p)
+    f.close() # check jpgs, disproportional
+```
+
+No.13
+-----
