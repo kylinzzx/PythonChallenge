@@ -1,5 +1,7 @@
+
 Python Challenge
 =================
+
 
 No.1
 ----
@@ -7,6 +9,7 @@ http://www.pythonchallenge.com/pc/def/map.html
 
 凯撒密码， K->M, O->Q, E->G, 位移了2
 因此对标题 map 进行位移2操作，得到 ocr
+
 
 No.2
 ----
@@ -24,6 +27,7 @@ for c in hints:
 print d # equality
 ```
 
+
 No.3
 ----
 http://www.pythonchallenge.com/pc/def/equality.html
@@ -37,6 +41,7 @@ f.close()
 x = re.findall('r[a-z][A-Z]{3}[a-z][A-Z]{3}[a-z]',hints)
 print ''.join([i[4] for i in x]) # linkedlist
 ```
+
 
 No.4
 ----
@@ -55,6 +60,7 @@ while n:
 ```
 中间出错几次，按照提示重新确定n，继续循环， 最后得到 peak.html
 
+
 No.5
 -----
 http://www.pythonchallenge.com/pc/def/peak.html
@@ -71,6 +77,7 @@ for l in hints:
     print line
 ```
 最后出现的字符串图片为 channel
+
 
 No.6
 -----
@@ -102,6 +109,7 @@ print "".join(comment)
 ```
 得到的为 hockey, 由 oxygen 构成。
 
+
 No.7
 ----
 http://www.pythonchallenge.com/pc/def/oxygen.html
@@ -121,6 +129,7 @@ next =  [105, 110, 116, 101, 103, 114, 105, 116, 121]
 "".join(map(chr, next)) # integrity
 ```
 
+
 No.8
 ----
 http://www.pythonchallenge.com/pc/def/integrity.html
@@ -135,6 +144,7 @@ pw = 'BZh91AY&SY\x94$|\x0e\x00\x00\x00\x81\x00\x03$ \x00!\x9ah3M\x13<]\xc9\x14\x
 print bz2.decompress(un) # huge
 print bz2.decompress(pw) # file
 ```
+
 
 No.9
 -----
@@ -176,6 +186,7 @@ img.save('new.jpg')
 ```
 得到一头公牛的图片，bull
 
+
 No.10
 -----
 http://www.pythonchallenge.com/pc/return/bull.html
@@ -201,6 +212,7 @@ while n<30:
 print len(a) # 5808
 ```
 
+
 No.11
 ------
 http://www.pythonchallenge.com/pc/return/5808.html
@@ -224,6 +236,7 @@ subimg[0].save('even.jpg')
 subimg[1].save('odd.jpg') # evil
 ```
 
+
 No.12
 -----
 http://www.pythonchallenge.com/pc/return/evil.html
@@ -245,5 +258,96 @@ for i in range(5):
     f.close() # check jpgs, disproportional
 ```
 
+
 No.13
 -----
+http://www.pythonchallenge.com/pc/return/disproportional.html
+
+为一个XML-RPC server, 因此
+
+```python
+import xmlrpclib
+url = "http://www.pythonchallenge.com/pc/phonebook.php"
+phonebook = xmlrpclib.Server(url)
+print phonebook.system.listMethods()
+print phonebook.system.methodHelp("phone")
+print phonebook.phone("Bert") # 555-ITALY
+```
+
+## No.14
+
+点开图片发现图片的大小是10000*1, 螺旋和提示`100*100=(100+99+99+98)+(...)`
+```python
+from PIL import Image
+
+width = 100
+wire = Image.open("wire.png")
+new_img = Image.new(wire.mode, (width, width), color=0)
+
+def get_xy(width=width):
+    x, y = 0, 0
+    w = width
+    while True:
+        # print(x, y, "---->")
+        for j in range(w):
+            yield x, y
+            x += 1
+        x -= 1
+        # print("---->|", x, y)
+        y += 1
+        for j  in range(w-1):
+            yield x, y
+            y += 1
+        y -= 1
+        # print("<----", x,y)
+        x -= 1
+        for j in range(w-1):
+            yield x, y
+            x -= 1
+        x += 1
+        # print("|<----", x,y)
+        y -= 1
+        for j in range(w-2):
+            yield x, y
+            y -= 1
+        y += 1
+        x += 1
+        w -= 2
+
+xy  = get_xy(width=width)
+
+for i in range(width*width):
+    x, y  = xy.next()
+    new_img.putpixel((x,y), wire.getpixel((i, 0)))
+
+new_img.show() # cat -> uzi
+```
+
+## No.15
+图片中为日历，并且右下角2月有29天，因此为闰年，注释中提到是第二年轻的
+```python
+from calendar import isleap, weekday
+for year in range(1006, 2000, 10):
+    if isleap(year) and weekday(year, 1, 26) == 0:
+        print year
+# 1176, 1356, 1576, 1756, 1976
+```
+1756.1.27 莫扎特出生 mozart
+
+## No.16
+按照图的意思应该是根据粉色的标记进行重排
+```python
+from PIL import Image
+PINK = 195
+mess = Image.open("mozart.gif")
+new_img = Image.new(mess.mode, mess.size)
+width = mess.size[0]
+data = list(mess.getdata())
+new_data = list(data)
+for head in range(0, len(data), width):
+    pink = data.index(PINK, head)
+    new_data[head:head+width] = data[pink:head+width]+data[head:pink]
+new_img.putdata(new_data)
+new_img.show() # romance
+```
+## No.17
